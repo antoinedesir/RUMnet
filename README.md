@@ -4,3 +4,5 @@ This is the code associated with the paper *Representing Random Utility Choice M
 
 - A Python code base for training RUMnets.
 - The code to run the experiments from the paper.
+
+Note that this is a work-in-progress repository.
