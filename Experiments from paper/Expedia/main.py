@@ -218,8 +218,8 @@ def data_prepE(modelName,perm = 1):
     '''
     Takes wide data (normalized) and returns list of product features, separate from customers'
     '''
-    raw_data = np.load("X_matrix_vAli.npy")
-    raw_target = np.load("Y_matrix_vAli.npy")
+    raw_data = np.load("X_matrix.npy")
+    raw_target = np.load("Y_matrix.npy")
     
     print("RAW DATA | The number of observations is {:,.0f}.".format(raw_data.shape[0]))
     print("RAW DATA | The number of columns per observations is {:,.0f}.".format(raw_data.shape[1]))
