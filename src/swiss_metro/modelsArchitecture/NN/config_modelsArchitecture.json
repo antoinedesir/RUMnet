@@ -1,0 +1,32 @@
+
+{
+    "models" : [
+    {
+        "name": "NN_small",
+        "modelName": "NN",
+    
+        "param" : {
+            "depth" : 3,
+            "width" : 10
+        }
+    },
+    {
+        "name": "NN_medium",
+        "modelName": "NN",
+    
+        "param" : {
+            "depth" : 5,
+            "width" : 20
+        }
+    },
+    {
+        "name": "NN_large",
+        "modelName": "NN",
+    
+        "param" : {
+            "depth" : 10,
+            "width" : 30
+        }
+    }
+    ]
+}

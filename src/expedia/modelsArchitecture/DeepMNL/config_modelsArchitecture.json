@@ -1,0 +1,32 @@
+
+{
+    "models" : [
+    {
+        "name": "DeepMNL_small",
+        "modelName": "MNL",
+
+        "param" : {
+            "depth" : 3,
+            "width" : 10
+        }
+    },
+    {
+        "name": "DeepMNL_medium",
+        "modelName": "MNL",
+
+        "param" : {
+            "depth" : 5,
+            "width" : 20
+        }
+    },
+    {
+        "name": "DeepMNL_large",
+        "modelName": "MNL",
+
+        "param" : {
+            "depth" : 10,
+            "width" : 30
+        }
+    }
+    ]
+}

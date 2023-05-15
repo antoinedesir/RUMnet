@@ -1,0 +1,45 @@
+
+{
+    "models" : [
+    {
+        "name": "mixDeepMNL1_small",
+        "modelName": "mixDeepMNL",
+
+        "param" : {
+            "depth": 6,
+            "width": 10,
+            "number_mixture": 6
+        }
+    },
+    {
+        "name": "mixDeepMNL1_medium",
+        "modelName": "mixDeepMNL",
+
+        "param" : {
+            "depth": 10,
+            "width": 20,
+            "number_mixture": 6
+        }
+    },
+    {
+        "name": "mixDeepMNL2_small",
+        "modelName": "mixDeepMNL",
+
+        "param" : {
+            "depth": 6,
+            "width": 10,
+            "number_mixture": 11
+        }
+    },
+    {
+        "name": "mixDeepMNL2_medium",
+        "modelName": "mixDeepMNL",
+
+        "param" : {
+            "depth": 10,
+            "width": 20,
+            "number_mixture": 11
+        }
+    }
+    ]
+}
