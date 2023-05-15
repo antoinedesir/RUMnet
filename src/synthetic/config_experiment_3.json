@@ -1,0 +1,14 @@
+
+{
+    "testGroup": "synthetic",
+    "testName": "unobserved",
+
+    "assortmentSettings": {
+        "number_samples": 10000,
+        "number_p_features": 2,
+        "number_products": 50,
+        "assortment_size": 10,
+        "assort_repeat": 10
+    }
+
+}   

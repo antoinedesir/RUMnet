@@ -1,0 +1,86 @@
+
+{
+    "models" : [
+    {
+        "name": "RF_1",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 100,
+            "max_depth" : 10
+        }
+    },
+    {
+        "name": "RF_2",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 200,
+            "max_depth" : 10
+        }
+    },
+    {
+        "name": "RF_3",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 400,
+            "max_depth" : 10
+        }
+    },
+    {
+        "name": "RF_4",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 100,
+            "max_depth" : 15
+        }
+    },
+    {
+        "name": "RF_5",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 200,
+            "max_depth" : 15
+        }
+    },
+    {
+        "name": "RF_6",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 400,
+            "max_depth" : 15
+        }
+    },
+    {
+        "name": "RF_7",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 100,
+            "max_depth" : 20
+        }
+    },
+    {
+        "name": "RF_8",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 200,
+            "max_depth" : 20
+        }
+    },
+    {
+        "name": "RF_9",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 400,
+            "max_depth" : 20
+        }
+    }
+    ]
+}

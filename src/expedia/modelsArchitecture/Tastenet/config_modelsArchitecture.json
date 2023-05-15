@@ -1,0 +1,32 @@
+
+{
+    "models" : [
+    {
+        "name": "TasteNet_small",
+        "modelName": "TasteNet",
+
+        "param" : {
+            "depth" : 3,
+            "width" : 10
+        }
+    },
+    {
+        "name": "TasteNet_medium",
+        "modelName": "TasteNet",
+
+        "param" : {
+            "depth" : 5,
+            "width" : 20
+        }
+    },
+    {
+        "name": "TasteNet_large",
+        "modelName": "TasteNet",
+
+        "param" : {
+            "depth" : 10,
+            "width" : 30
+        }
+    }
+    ]
+}

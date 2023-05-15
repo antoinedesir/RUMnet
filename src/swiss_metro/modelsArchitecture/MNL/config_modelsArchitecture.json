@@ -1,0 +1,14 @@
+
+{
+    "models" : [{
+        "name": "MNL",
+        "modelFamily": "MNL",
+        "modelName": "MNL",
+    
+        "param" : {
+            "depth" : 0,
+            "width" : 0
+        }
+    }
+    ]
+}

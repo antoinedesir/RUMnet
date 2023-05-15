@@ -1,0 +1,133 @@
+
+{
+    "models" : [{
+        "name": "DeepMNL_small",
+        "modelName": "MNL",
+    
+        "param" : {
+            "depth" : 0,
+            "width" : 0
+        }
+    },
+    {
+        "name": "DeepMNL_medium",
+        "modelName": "MNL",
+    
+        "param" : {
+            "depth" : 1,
+            "width" : 3
+        }
+    },
+    {
+        "name": "DeepMNL_large",
+        "modelName": "MNL",
+    
+        "param" : {
+            "depth" : 2,
+            "width" : 5
+        }
+    },
+    {
+        "name": "RUMnet1_small",
+        "modelName": "RUMnet",
+    
+        "param" : {
+            "depth_u": 0,
+            "width_u": 0,
+            "depth_eps_x": 0,
+            "width_eps_x": 0,
+            "last_x":5, 
+            "depth_eps_z":0,
+            "width_eps_z":0,
+            "last_z":0,
+            "heterogeneity_x": 2,
+            "heterogeneity_z": 2
+        }
+    },
+    {
+        "name": "RUMnet1_medium",
+        "modelName": "RUMnet",
+    
+        "param" : {
+            "depth_u": 1,
+            "width_u": 3,
+            "depth_eps_x": 1,
+            "width_eps_x": 3,
+            "last_x":5, 
+            "depth_eps_z":1,
+            "width_eps_z":5,
+            "last_z":5,
+            "heterogeneity_x": 2,
+            "heterogeneity_z": 2
+        }
+    },
+    {
+        "name": "RUMnet1_large",
+        "modelName": "RUMnet",
+    
+        "param" : {
+            "depth_u": 2,
+            "width_u": 5,
+            "depth_eps_x": 2,
+            "width_eps_x": 5,
+            "last_x":5, 
+            "depth_eps_z":2,
+            "width_eps_z":5,
+            "last_z":5,
+            "heterogeneity_x": 2,
+            "heterogeneity_z": 2
+        }
+    },
+    {
+        "name": "RUMnet2_small",
+        "modelName": "RUMnet",
+    
+        "param" : {
+            "depth_u": 0,
+            "width_u": 0,
+            "depth_eps_x": 0,
+            "width_eps_x": 0,
+            "last_x":5, 
+            "depth_eps_z":0,
+            "width_eps_z":0,
+            "last_z":0,
+            "heterogeneity_x": 5,
+            "heterogeneity_z": 5
+        }
+    },
+    {
+        "name": "RUMnet2_medium",
+        "modelName": "RUMnet",
+    
+        "param" : {
+            "depth_u": 1,
+            "width_u": 3,
+            "depth_eps_x": 1,
+            "width_eps_x": 3,
+            "last_x":5, 
+            "depth_eps_z":1,
+            "width_eps_z":5,
+            "last_z":5,
+            "heterogeneity_x": 5,
+            "heterogeneity_z": 5
+        }
+    },
+    {
+        "name": "RUMnet2_large",
+        "modelName": "RUMnet",
+    
+        "param" : {
+            "depth_u": 2,
+            "width_u": 5,
+            "depth_eps_x": 2,
+            "width_eps_x": 5,
+            "last_x":5, 
+            "depth_eps_z":2,
+            "width_eps_z":5,
+            "last_z":5,
+            "heterogeneity_x": 5,
+            "heterogeneity_z": 5
+        }
+    }
+    ]
+}

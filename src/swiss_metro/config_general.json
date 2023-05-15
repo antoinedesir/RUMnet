@@ -1,0 +1,21 @@
+
+{
+    "seed": 1234,
+    
+    "training": {
+        "earlyStopping" : true,
+        "numberEpochs" : 3, 
+        "regularization" : 0,
+        "learningRate" : 0.001,
+        "batchSize" : 32,
+        "tol" : 1e-4,
+        "early_stopping_patience": 100
+    },
+    
+    "crossVal": {
+        "numberFold": 10,
+        "fractionTest": 0.1,
+        "fractionVal": 0.1
+    }
+    
+}
