@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Mar  6 09:44:24 2023
-
-@author: aaouad
 """
 
 
