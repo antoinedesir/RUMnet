@@ -5,7 +5,7 @@ This is the code associated with the paper *Representing Random Utility Choice M
 - Python code base for training RUMnets.
 - Python code to run the benchmarks from the paper.
 
-This is a *work-in-progress* repository.
+This repository is work-in-progress.
 
 ## Usage
 
