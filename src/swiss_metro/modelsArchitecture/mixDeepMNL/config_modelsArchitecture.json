@@ -6,9 +6,9 @@
         "modelName": "mixDeepMNL",
     
         "param" : {
-            "depth": 3,
+            "depth": 6,
             "width": 10,
-            "number_mixture": 5
+            "number_mixture": 6
         }
     },
     {
@@ -16,9 +16,9 @@
         "modelName": "mixDeepMNL",
     
         "param" : {
-            "depth": 5,
+            "depth": 10,
             "width": 20,
-            "number_mixture": 5
+            "number_mixture": 6
         }
     },
     {
@@ -26,9 +26,9 @@
         "modelName": "mixDeepMNL",
     
         "param" : {
-            "depth": 3,
+            "depth": 6,
             "width": 10,
-            "number_mixture": 10
+            "number_mixture": 11
         }
     },
     {
@@ -36,9 +36,9 @@
         "modelName": "mixDeepMNL",
     
         "param" : {
-            "depth": 5,
+            "depth": 10,
             "width": 20,
-            "number_mixture": 10
+            "number_mixture": 11
         }
     }
     ]

@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Mar  6 09:43:05 2023
-
-@author: aaouad
-"""
 
 import os
 import joblib
 import tensorflow as tf
-
+import json 
 import pandas as pd
 import numpy as np
 import csv
@@ -24,6 +19,10 @@ from sklearn.metrics import accuracy_score
 
 from .synthetic.data_preparation import prediction, compute_loss
 from .models import *
+
+def scce_with_ls(y, y_hat):
+    y = tf.one_hot(tf.cast(y, tf.int32), 3)
+    return tf.keras.losses.CategoricalCrossentropy(y, y_hat, from_logits=False, label_smoothing = 0.03)
 
 
 def split_data_X(X, splitNumber, paramsGeneral, paramsExperiment, RF_indicator):
@@ -57,56 +56,6 @@ def split_data_Y(Y, splitNumber, paramsGeneral, paramsExperiment):
     
     return Yval, Ytrain, Ytest
 
-def cross_validate_synthetic_ground_truth(X, Y, paramsGeneral, coef_true, paramsExperiment):
-    
-    #tol = paramsGeneral['training']['tol']
-    assortment_size = paramsExperiment['assortmentSettings']["number_products"]
-    data_rows = []
-
-    sizeObservation = paramsExperiment['assortmentSettings']['number_samples']
-    sizeTest = int(paramsGeneral['crossVal']['fractionTest']*sizeObservation)
-    sizeVal = int(paramsGeneral['crossVal']['fractionVal']*sizeObservation) 
-    sizeTrain = sizeObservation - sizeTest - sizeVal
-    
-    assortment_size += 1
-    for i in range(paramsGeneral['crossVal']['numberFold']):
-        
-        Xval, Xtrain, Xtest = split_data_X(X,i, paramsGeneral, paramsExperiment, 0)
-        Yval, Ytrain, Ytest = split_data_Y(Y,i,paramsGeneral, paramsExperiment)
-
-        #### Compute error on training set
-        y_pred_train, proba_pred_train = prediction(Xtrain, sizeTrain, coef_true, paramsExperiment)
-        true_trainAcc = accuracy_score(Ytrain, y_pred_train)
-        true_trainLoss = compute_loss(proba_pred_train, Ytrain,paramsGeneral["training"]["tol"],paramsExperiment["assortmentSettings"]["number_products"])
-
-        #### Compute error on validation set
-        y_pred_val, proba_pred_val = prediction(Xval, sizeVal, coef_true, paramsExperiment)
-        true_valAcc = accuracy_score(Yval, y_pred_val)
-        true_valLoss = compute_loss(proba_pred_val, Yval,paramsGeneral["training"]["tol"],paramsExperiment["assortmentSettings"]["number_products"])
-
-        #### Compute error on test set
-        y_pred_test, proba_pred_test = prediction(Xtest, sizeTest, coef_true, paramsExperiment)
-        true_testAcc = accuracy_score(Ytest, y_pred_test)
-        true_testLoss = compute_loss(proba_pred_test, Ytest, paramsGeneral["training"]["tol"],paramsExperiment["assortmentSettings"]["assortment_size"])
-
-        data_rows += [{
-            'Fold': i,  
-            'trainLoss': true_trainLoss,
-            'trainAcc': true_trainAcc,
-            'testLoss': true_testLoss,
-            'testAcc': true_testAcc,
-            'valLoss': true_valLoss,
-            'valAcc': true_valAcc
-        }]
-
-    data = pd.DataFrame(data_rows)
-    data = data.set_index('Fold').transpose()
-    temp_mean = data.mean(numeric_only=True, axis=1)
-    temp_std = data.std(numeric_only=True, axis=1)
-    data['mean'] = temp_mean
-    data['std'] = temp_std
-    data.to_csv('output/'+paramsExperiment['testGroup']+'/'+paramsExperiment['testName']+'/'+'ground_truth_results.csv', index = True)   
-
 def plot_history(history, iterNumber, paramsArchitecture, paramsExperiment):
     '''
     Plot history of training
@@ -128,8 +77,9 @@ def model_fit(Xtrain, Xval, Ytrain, Yval, iterNumber, paramsGeneral, paramsArchi
     
     ##### Create model
     model = create_model(paramsArchitecture, paramsGeneral, paramsExperiment)
-    loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False)
-    optimizer = tf.keras.optimizers.Adam(learning_rate=paramsGeneral['training']['learningRate'])
+    #loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False)
+    loss = tf.keras.losses.CategoricalCrossentropy(from_logits=False, label_smoothing=paramsGeneral['training']['label_smoothing'])
+    optimizer = tf.keras.optimizers.Adam(learning_rate=paramsGeneral['training']['learningRate']) # # # #tf.keras.optimizers.legacy.Adam(learning_rate=paramsGeneral['training']['learningRate'])  # 
     model.compile(optimizer=optimizer, 
                   loss=loss, 
                   metrics = ["accuracy"]
@@ -146,7 +96,7 @@ def model_fit(Xtrain, Xval, Ytrain, Yval, iterNumber, paramsGeneral, paramsArchi
         callbacks += [es]                
     
     ###### Fitting model
-    start = time.time()                                     
+    start = time.time()
     history = model.fit(Xtrain,Ytrain,
                     validation_data= (Xval,Yval),
                     batch_size=paramsGeneral['training']['batchSize'],
@@ -190,7 +140,7 @@ def model_fit_tree(Xtrain, Xval, Ytrain, Yval, iterNumber, paramsGeneral, params
     dirName = "output/"+paramsExperiment["testGroup"]+"/"+paramsExperiment["testName"]+'/'+paramsArchitecture['name']
     if not os.path.exists(dirName):
         os.makedirs(dirName)
-    joblib.dump(model,'output/'+paramsExperiment['testGroup']+'/'+paramsExperiment['testName']+'/'+paramsArchitecture['name']+'/model_'+str(iterNumber)+'.joblib')
+    #joblib.dump(model,'output/'+paramsExperiment['testGroup']+'/'+paramsExperiment['testName']+'/'+paramsArchitecture['name']+'/model_'+str(iterNumber)+'.joblib')
 
     return model, end-start
 
@@ -206,6 +156,11 @@ def cross_validate(X, Y, paramsGeneral, paramsArchitecture, paramsExperiment):
         
         Xval, Xtrain, Xtest = split_data_X(X,i, paramsGeneral, paramsExperiment, paramsArchitecture['modelName']=='RandomForest')
         Yval, Ytrain, Ytest = split_data_Y(Y,i,paramsGeneral, paramsExperiment)
+
+        #### One-hot-encoding of Y
+        Ytrain_ohe = tf.keras.utils.to_categorical(Ytrain, num_classes=paramsExperiment['assortmentSettings']["assortment_size"])
+        Yval_ohe = tf.keras.utils.to_categorical(Yval, num_classes=paramsExperiment['assortmentSettings']["assortment_size"])
+        Ytest_ohe = tf.keras.utils.to_categorical(Ytest, num_classes=paramsExperiment['assortmentSettings']["assortment_size"])
 
         data_cross_val = []
         
@@ -226,11 +181,11 @@ def cross_validate(X, Y, paramsGeneral, paramsArchitecture, paramsExperiment):
             valAcc = accuracy_score(Yval, model.predict(Xval))
             testAcc = accuracy_score(Ytest, model.predict(Xtest))
 
-            y_pred = (model.predict_proba(Xtrain)+tol)/(1+ tol*paramsExperiment['assortmentSettings']["number_products"])    
+            y_pred = (1-tol)*model.predict_proba(Xtrain)+tol/paramsExperiment['assortmentSettings']["number_products"]    
             trainLoss = -np.mean(np.log([y_pred[q,Ytrain[q]] for q in range(len(Ytrain))]))
-            y_pred = (model.predict_proba(Xval)+tol)/(1+ tol*paramsExperiment['assortmentSettings']["number_products"])    
+            y_pred = (1-tol)*model.predict_proba(Xval)+tol/paramsExperiment['assortmentSettings']["number_products"]    
             valLoss = -np.mean(np.log([y_pred[q,Yval[q]] for q in range(len(Yval))]))
-            y_pred = (model.predict_proba(Xtest)+tol)/(1+ tol*paramsExperiment['assortmentSettings']["number_products"])    
+            y_pred = (1-tol)*model.predict_proba(Xtest)+tol/paramsExperiment['assortmentSettings']["number_products"]    
             testLoss = -np.mean(np.log([y_pred[q,Ytest[q]] for q in range(len(Ytest))]))
 
             stopped_epoch = 0
@@ -238,11 +193,11 @@ def cross_validate(X, Y, paramsGeneral, paramsArchitecture, paramsExperiment):
         else:
             
             #### model fit 
-            model, time_fit, stopped_epoch = model_fit(Xtrain, Xval, Ytrain, Yval, i, paramsGeneral, paramsArchitecture, paramsExperiment)
+            model, time_fit, stopped_epoch = model_fit(Xtrain, Xval, Ytrain_ohe, Yval_ohe, i, paramsGeneral, paramsArchitecture, paramsExperiment)
             #### Evaluate model
-            trainLoss , trainAcc = model.evaluate(Xtrain,Ytrain, verbose=0) 
-            testLoss , testAcc = model.evaluate(Xtest,Ytest, verbose=0) 
-            valLoss , valAcc = model.evaluate(Xval,Yval, verbose=0) 
+            trainLoss , trainAcc = model.evaluate(Xtrain,Ytrain_ohe, verbose=0) 
+            testLoss , testAcc = model.evaluate(Xtest,Ytest_ohe, verbose=0) 
+            valLoss , valAcc = model.evaluate(Xval,Yval_ohe, verbose=0) 
         
             
         data_cross_val = [{

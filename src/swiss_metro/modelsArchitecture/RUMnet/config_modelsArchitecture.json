@@ -10,10 +10,10 @@
             "width_u": 10,
             "depth_eps_x": 3,
             "width_eps_x": 10,
-            "last_x":10, 
+            "last_x":0, 
             "depth_eps_z":3,
             "width_eps_z":10,
-            "last_z":10,
+            "last_z":0,
             "heterogeneity_x": 5,
             "heterogeneity_z": 5
         }
@@ -27,10 +27,10 @@
             "width_u": 20,
             "depth_eps_x": 5,
             "width_eps_x": 20,
-            "last_x":20, 
+            "last_x":0, 
             "depth_eps_z":5,
             "width_eps_z":20,
-            "last_z":20,
+            "last_z":0,
             "heterogeneity_x": 5,
             "heterogeneity_z": 5
         }
@@ -44,10 +44,10 @@
             "width_u": 10,
             "depth_eps_x": 3,
             "width_eps_x": 10,
-            "last_x":10, 
+            "last_x":0, 
             "depth_eps_z":3,
             "width_eps_z":10,
-            "last_z":10,
+            "last_z":0,
             "heterogeneity_x": 10,
             "heterogeneity_z": 10
         }
@@ -61,10 +61,10 @@
             "width_u": 20,
             "depth_eps_x": 5,
             "width_eps_x": 20,
-            "last_x":20, 
+            "last_x": 0, 
             "depth_eps_z":5,
             "width_eps_z":20,
-            "last_z":20,
+            "last_z":0,
             "heterogeneity_x": 10,
             "heterogeneity_z": 10
         }

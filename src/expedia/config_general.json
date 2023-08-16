@@ -8,7 +8,8 @@
         "regularization" : 0,
         "learningRate" : 0.001,
         "batchSize" : 32,
-        "tol" : 1e-4,
+        "label_smoothing": 1e-4,
+        "tol" : 0,
         "early_stopping_patience": 10
     },
 

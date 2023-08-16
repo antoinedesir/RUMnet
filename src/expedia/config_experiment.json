@@ -1,6 +1,6 @@
 {
     "testGroup": "real",
-    "testName": "expedia",
+    "testName": "expedia_with_smoothing",
     "assortmentSettings": {}
 
 }
