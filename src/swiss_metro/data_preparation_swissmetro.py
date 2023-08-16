@@ -35,14 +35,18 @@ def data_swissmetro():
     ### dropping no choice
     raw_data = raw_data[raw_data[target] > 0]
     raw_data.loc[:,target] = raw_data.loc[:,target]-1
-
+    print ("DROPPING NO CHOICE | The number of observations is {:,.0f}.".format(raw_data.shape[0]))
     ### dropping unknown age
     #raw_data = raw_data[raw_data["AGE"] != 6]
     #raw_data = raw_data[raw_data["PURPOSE"] != 9]
-    
+
+    ### Filtering out cases where all options were not available
+    #raw_data = raw_data[raw_data["TRAIN_AV"]+raw_data["SM_AV"] + raw_data["CAR_AV"] == 3]
+    #print ("KEEPING ALL AVAIL | The number of observations is {:,.0f}.".format(raw_data.shape[0]))
+
     raw_data = raw_data.reset_index()
     raw_data = raw_data.sample(frac=1).reset_index(drop=True)
-    print ("DROPPING NO CHOICE | The number of observations is {:,.0f}.".format(raw_data.shape[0]))
+    
 
     ### Creating dummies
     long_data = pd.get_dummies(raw_data, columns=c_features, drop_first=False)
@@ -65,11 +69,16 @@ def data_swissmetro():
     X2 = long_data[["SM_AV", "SM_TT", "SM_CO", "SM_HE","zero","one","zero"]].values.astype(float)
     X3 = long_data[["CAR_AV", "CAR_TT","CAR_CO", "CAR_HE","zero","zero","one"]].values.astype(float)
     number_features_per_product = 7
+
+    #X1 = long_data[["TRAIN_TT", "TRAIN_CO", "TRAIN_HE","one","zero","zero"]].values.astype(float)
+    #X2 = long_data[["SM_TT", "SM_CO", "SM_HE","zero","one","zero"]].values.astype(float)
+    #X3 = long_data[["CAR_TT","CAR_CO", "CAR_HE","zero","zero","one"]].values.astype(float)
+    #number_features_per_product = 6
     
-    # X1 = long_data[["TRAIN_AV", "TRAIN_TT", "TRAIN_CO", "TRAIN_HE"]].values.astype(float)
-    # X2 = long_data[["SM_AV", "SM_TT", "SM_CO", "SM_HE"]].values.astype(float)
-    # X3 = long_data[["CAR_AV", "CAR_TT","CAR_CO", "CAR_HE"]].values.astype(float)
-    # number_features_per_product = 4
+    #X1 = long_data[["TRAIN_AV", "TRAIN_TT", "TRAIN_CO", "TRAIN_HE"]].values.astype(float)
+    #X2 = long_data[["SM_AV", "SM_TT", "SM_CO", "SM_HE"]].values.astype(float)
+    #X3 = long_data[["CAR_AV", "CAR_TT","CAR_CO", "CAR_HE"]].values.astype(float)
+    #umber_features_per_product = 4
     
     Z = long_data[c_features].values.astype(float)
 

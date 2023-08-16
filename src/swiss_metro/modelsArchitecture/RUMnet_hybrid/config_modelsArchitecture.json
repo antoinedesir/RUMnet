@@ -1,0 +1,22 @@
+
+{
+    "models" : [
+    {
+        "name": "RUMnet_hybrid",
+        "modelName": "RUMnet",
+    
+        "param" : {
+            "depth_u": 10,
+            "width_u": 30,
+            "depth_eps_x": 2,
+            "width_eps_x": 5,
+            "last_x":0, 
+            "depth_eps_z": 3,
+            "width_eps_z":10,
+            "last_z":0,
+            "heterogeneity_x": 1,
+            "heterogeneity_z": 40
+        }
+    }
+    ]
+}

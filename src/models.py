@@ -1,24 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# why RUMModel_xonly? TODO Merge
-# no last_x, last_z? TODO same results
-# inconsistency with RUM_xonly TODO fix
-
 import tensorflow as tf
 from tensorflow.keras.layers import Dense
 
 def create_model(paramsArchitecture, paramsGeneral, paramsExperiment):
-   
     if paramsArchitecture['modelName'] == 'MNL':
         model = MNLModel(paramsArchitecture['param'],paramsGeneral, paramsExperiment)
     elif paramsArchitecture['modelName'] == 'mixDeepMNL':
         model = mixDeepMNL(paramsArchitecture['param'],paramsGeneral, paramsExperiment)
     elif paramsArchitecture['modelName'] == 'RUMnet':
-        if paramsExperiment['testName'] in ['mnl','nonlinear','unobserved']:
-          model = RUMModel_xonly(paramsArchitecture['param'],paramsGeneral, paramsExperiment)
-        else:
-           model = RUMModel(paramsArchitecture['param'],paramsGeneral, paramsExperiment)
+        model = RUMModel(paramsArchitecture['param'],paramsGeneral, paramsExperiment)
     elif paramsArchitecture['modelName'] == 'TasteNet':
         model = TasteNet(paramsArchitecture['param'],paramsGeneral, paramsExperiment)
     elif paramsArchitecture['modelName'] == 'NN':
@@ -63,8 +55,7 @@ class MNLModel(tf.keras.Model):
     
     combined = tf.keras.layers.Concatenate()(U)
     
-    return (tol+tf.keras.layers.Activation(activation=tf.nn.softmax)(combined))\
-            /(1+ tol*n)
+    return (1-tol)*tf.keras.layers.Activation(activation=tf.nn.softmax)(combined) + tol*tf.ones_like(combined)/n 
 
 
 class TasteNet(tf.keras.Model):
@@ -93,7 +84,7 @@ class TasteNet(tf.keras.Model):
   def call(self,inputs):
     
     tol = self.paramsGeneral['training']['tol']
-    n = self.paramsExperiment['assortmentSettings']['number_products']
+    n = self.paramsExperiment['assortmentSettings']['assortment_size']
     
     U = inputs[:n]
     Z = tf.keras.layers.Concatenate()(inputs[n:])   
@@ -108,8 +99,7 @@ class TasteNet(tf.keras.Model):
     
     combined = tf.keras.layers.Concatenate()(U) 
     
-    return (tol+tf.keras.layers.Activation(activation=tf.nn.softmax)(combined))\
-            /(1+ tol*n)
+    return (1-tol)*tf.keras.layers.Activation(activation=tf.nn.softmax)(combined) + tol*tf.ones_like(combined)/n 
 
 
 class mixDeepMNL(tf.keras.Model):
@@ -122,7 +112,7 @@ class mixDeepMNL(tf.keras.Model):
     self.paramsExperiment = paramsExperiment
 
     regularizer = tf.keras.regularizers.L2(self.paramsGeneral['training']['regularization'])
-    #initializer = tf.keras.initializers.TruncatedNormal(mean=0.0001, stddev=0.0002)
+   
     self.dense = [[Dense(self.paramsArchitecture['width'], 
                             activation="elu",
                             kernel_regularizer=regularizer, 
@@ -132,7 +122,6 @@ class mixDeepMNL(tf.keras.Model):
      
     self.last = [Dense(1, 
                     activation="linear",
-                    #kernel_regularizer=regularizer, 
                     use_bias= False) for j in range(self.paramsArchitecture['number_mixture'])]
 
   def call(self,inputs):
@@ -155,7 +144,7 @@ class mixDeepMNL(tf.keras.Model):
           U = [self.dense[j][k](U[i]) for i in range(n)]
         U = [self.last[j](U[i]) for i in range(n)]             
         combined = tf.keras.layers.Concatenate()(U)
-        combined = (tol+tf.keras.layers.Activation(activation=tf.nn.softmax)(combined))/(1+ tol*n)
+        combined = (1-tol)*tf.keras.layers.Activation(activation=tf.nn.softmax)(combined) + tol*tf.ones_like(combined)/n
         y.append(combined)
 
     if (self.paramsArchitecture['number_mixture'] > 1):
@@ -193,7 +182,7 @@ class RUMModel(tf.keras.Model):
 
   def call(self,inputs):
     tol = self.paramsGeneral['training']['tol']
-    n = self.paramsExperiment['assortmentSettings']['number_products']
+    n = self.paramsExperiment['assortmentSettings']['assortment_size']
     y = []
     
     for i in range(self.paramsArchitecture['heterogeneity_x']):
@@ -218,7 +207,7 @@ class RUMModel(tf.keras.Model):
         U = [self.last(u) for u in U]
 
         combined = tf.keras.layers.Concatenate()(U) 
-        combined = (tol+tf.keras.layers.Activation(activation=tf.nn.softmax)(combined))/(1+ tol*n)
+        combined = (1-tol)*tf.keras.layers.Activation(activation=tf.nn.softmax)(combined) + tol*tf.ones_like(combined)/n
         y.append(combined)
     if (self.paramsArchitecture['heterogeneity_x']*self.paramsArchitecture['heterogeneity_z'] > 1):
       return tf.keras.layers.Average()(y)
@@ -276,9 +265,9 @@ class RUMModel_xonly(tf.keras.Model):
         U = [self.last(U[a]) for a in range(n)]
         combined = tf.keras.layers.Concatenate()(U) 
             
-        combined = (tol+tf.keras.layers.Activation(activation=tf.nn.softmax)(combined))/(1+ tol*n)
+        combined = (1-tol)*tf.keras.layers.Activation(activation=tf.nn.softmax)(combined) + tol*tf.ones_like(combined)/n
         y.append(combined)
-    if (self.paramsArchitecture['heterogeneity_x']*self.paramsArchitecture['heterogeneity_z'] > 1):
+    if (self.paramsArchitecture['heterogeneity_x'] > 1):
         return tf.keras.layers.Average()(y)
     else:
         return y
@@ -304,7 +293,7 @@ class VanillaNN(tf.keras.Model):
 
   def call(self,inputs):
     tol = self.paramsGeneral['training']['tol']
-    n = self.paramsExperiment["assortmentSettings"]['number_products'] 
+    n = self.paramsExperiment["assortmentSettings"]['assortment_size'] 
     
     X = inputs[:n]
     Z = inputs[n:]      
@@ -318,8 +307,6 @@ class VanillaNN(tf.keras.Model):
         combined = self.dense[k](combined)
     combined = self.last(combined)
 
-    return (tol+tf.keras.layers.Activation(activation=tf.nn.softmax)(combined))/(1+ tol*n)
-
-
+    return (1-tol)*tf.keras.layers.Activation(activation=tf.nn.softmax)(combined) + tol*tf.ones_like(combined)/n 
 
 

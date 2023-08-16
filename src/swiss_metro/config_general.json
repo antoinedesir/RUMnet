@@ -4,12 +4,13 @@
     
     "training": {
         "earlyStopping" : true,
-        "numberEpochs" : 3, 
+        "numberEpochs" : 2000, 
         "regularization" : 0,
         "learningRate" : 0.001,
         "batchSize" : 32,
-        "tol" : 1e-4,
-        "early_stopping_patience": 100
+        "tol" : 0,
+        "label_smoothing" : 0.01,
+        "early_stopping_patience": 300
     },
     
     "crossVal": {

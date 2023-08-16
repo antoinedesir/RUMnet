@@ -81,6 +81,33 @@
             "n_estimators" : 400,
             "max_depth" : 20
         }
+    },
+    {
+        "name": "RF_10",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 100,
+            "max_depth" : 5
+        }
+    },
+    {
+        "name": "RF_11",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 200,
+            "max_depth" : 5
+        }
+    },
+    {
+        "name": "RF_12",
+        "modelName": "RandomForest",
+    
+        "param" : {
+            "n_estimators" : 400,
+            "max_depth" : 5
+        }
     }
-    ]
+]
 }

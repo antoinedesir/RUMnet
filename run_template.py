@@ -28,9 +28,9 @@ def set_seed(seed):
 if __name__ == '__main__':
 
     #### Choose data set in {swiss_metro, expedia}
-    testname = "expedia"
+    testname = "swiss_metro"
     #### Choose model in {MNL, Tastenet, DeepMNL, mixDeepMNL, RUMnet, NN, RF}
-    modelFamily = "NN" 
+    modelFamily = "RUMnet"
     
     ##### Parameters common to all experiments
     with open("src/"+testname+"/config_general.json") as json_data_file:
@@ -55,13 +55,11 @@ if __name__ == '__main__':
     
     ##### Create dataset
     
-    X,Y,number_products,number_c_features,number_p_features = data_expedia_opt()
-    # X,Y,number_products,number_c_features,number_p_features = data_swissmetro()
+    #X,Y,number_products,number_c_features,number_p_features = data_expedia_opt(modelName,1)
+    X,Y,number_products,number_c_features,number_p_features = data_swissmetro()
     if modelFamily == "RF":
         X = np.concatenate(X, axis=1)
     
-    print("Data is ready.")
-        
     paramsExperiment["assortmentSettings"]["number_products"] = number_products
     paramsExperiment["assortmentSettings"]["assortment_size"] = number_products
     paramsExperiment["assortmentSettings"]["number_samples"] = Y.size
