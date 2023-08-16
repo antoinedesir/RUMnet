@@ -55,7 +55,7 @@ if __name__ == '__main__':
     
     ##### Create dataset
     
-    #X,Y,number_products,number_c_features,number_p_features = data_expedia_opt(modelName,1)
+    #X,Y,number_products,number_c_features,number_p_features = data_expedia_opt()
     X,Y,number_products,number_c_features,number_p_features = data_swissmetro()
     if modelFamily == "RF":
         X = np.concatenate(X, axis=1)
