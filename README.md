@@ -17,7 +17,7 @@ The configurations of experiments and models should be specified in the config J
 
 For new dataset applications, one need to construct a new data_preparation function under the same template format as in `experiment_auxiliary.py` and import the function in the script `run_template.py`.
 
-The results are saved in a folder `output/test_name/`.
+The results are saved in a folder `output/testGroup/test_name/`.
 
 ## Dependencies
 
